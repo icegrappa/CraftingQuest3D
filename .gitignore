@@ -70,3 +70,14 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# Ignore JetBrains Rider project files and folders
+.idea/
+
+# Exclude .gitattributes and .gitignore from being tracked by Git
+.gitattributes
+.gitignore
+
+# Exclude Visual Studio project files and user settings
+*.csproj.user
+*.csproj
