@@ -6,11 +6,13 @@ public class PlayerManager : CharacterManager
 {
     [HideInInspector] public PlayerAnimatorManager playerAnimator;
     [HideInInspector] public PlayerMotionController playerMotionController;
+    [HideInInspector] public PlayerNetworkManager playerNetworkManager;
     protected override void Awake()
     {
         base.Awake();
 
         playerMotionController = GetComponent<PlayerMotionController>();
+        playerNetworkManager = GetComponent<PlayerNetworkManager>();
         playerAnimator = GetComponent<PlayerAnimatorManager>();
     }
 
@@ -23,7 +25,7 @@ public class PlayerManager : CharacterManager
             return;
     
         // Obsługuje cały ruch postaci gracza
-        playerMotionController.HandleAllMovement();
+        playerMotionController.HandleAllMovementTypes();
     }
 
 

@@ -7,21 +7,24 @@ public class PlayerInputManager : MonoBehaviour
     private PlayerControls _playerControls;
     public PlayerManager player;
 
-     [Header("Movement Input")] 
-    [SerializeField] private Vector2 movementInput;
+    [Header("Movement Input")] [SerializeField]
+    private Vector2 movementInput;
 
-   public float verticalInput;
+    public float verticalInput;
     public float horizontalInput;
     public float moveAmount;
 
-    [Header("Camera Movement Input")] 
-    [SerializeField] private Vector2 cameraInput;
+    [Header("Camera Movement Input")] [SerializeField]
+    private Vector2 cameraInput;
 
     public float cameraVerticalInput;
     public float cameraHorizontalInput;
 
     [Header("Action Input")] [SerializeField]
-    private bool interact = false;
+    private bool interact;
+
+    [SerializeField] private bool sprintInput;
+    [SerializeField] private bool jumpInput;
 
 
     private void Awake()
@@ -40,6 +43,8 @@ public class PlayerInputManager : MonoBehaviour
         SceneManager.activeSceneChanged += OnSceneChange;
 
         instance.enabled = false; // Wyłączenie instancji na starcie; będzie włączona tylko w określonej scenie
+
+        if (_playerControls != null) _playerControls.Disable();
     }
 
     private void OnSceneChange(Scene oldScene, Scene newScene)
@@ -47,8 +52,11 @@ public class PlayerInputManager : MonoBehaviour
         // Sprawdza, czy nowo załadowana scena to główna scena świata; jeśli tak, aktywuje instancję
         if (newScene.buildIndex == GameManager.instance.GetWorldSceneIndex())
             instance.enabled = true; // Włączenie instancji w głównej scenie świata
+        if (_playerControls != null)
+            _playerControls.Enable();
         else
             instance.enabled = false; // Wyłączenie instancji, jeśli nie jesteśmy w głównej scenie świata
+        if (_playerControls != null) _playerControls.Disable();
     }
 
 
@@ -60,6 +68,12 @@ public class PlayerInputManager : MonoBehaviour
 
             _playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
             _playerControls.CameraMovement.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
+
+            // shift + hold decyduje o fladze dla sprintu
+            _playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
+            _playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+            //Jump input
+            _playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
         }
 
         _playerControls.Enable();
@@ -84,8 +98,15 @@ public class PlayerInputManager : MonoBehaviour
 
     private void Update()
     {
+        HandleInput();
+    }
+
+    private void HandleInput()
+    {
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
+        HandleSprintInput();
+        HandleJumpInput();
     }
 
     private void HandlePlayerMovementInput()
@@ -102,8 +123,9 @@ public class PlayerInputManager : MonoBehaviour
         if (moveAmount <= 0.5 && moveAmount > 0)
             moveAmount = 0.5f;
         else if (moveAmount >= 0.5 && moveAmount <= 1) moveAmount = 1;
-        
-        player.playerAnimator.UpdateAnimatorMovementValues(0 , moveAmount);
+
+        player.playerAnimator.UpdateAnimatorMovementValues(0, moveAmount,
+            player.playerNetworkManager.isSprinting.Value);
     }
 
     private void HandleCameraMovementInput()
@@ -111,5 +133,23 @@ public class PlayerInputManager : MonoBehaviour
         // Obsługa wejścia z myszy/PADA
         cameraVerticalInput = cameraInput.y;
         cameraHorizontalInput = cameraInput.x;
+    }
+
+    private void HandleSprintInput()
+    {
+        if (sprintInput)
+            player.playerMotionController.HandleSprinting();
+        else
+            player.playerNetworkManager.isSprinting.Value = false;
+    }
+
+    private void HandleJumpInput()
+    {
+        if (jumpInput)
+        {
+            jumpInput = false;
+
+            player.playerMotionController.HandleJumping();
+        }
     }
 }

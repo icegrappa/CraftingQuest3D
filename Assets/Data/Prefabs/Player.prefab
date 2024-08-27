@@ -781,8 +781,8 @@ GameObject:
   - component: {fileID: 4254627242011451120}
   - component: {fileID: 2779557199329935952}
   - component: {fileID: 3412998676494866881}
-  - component: {fileID: 3828640982341969553}
   - component: {fileID: 6307815592603613782}
+  - component: {fileID: -8436091456959898576}
   - component: {fileID: 8053191429043927268}
   m_Layer: 8
   m_Name: Player
@@ -840,6 +840,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ed4d977b36a8534dbc3426e1ac9add8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isGrounded: 0
+  _inAirTimer: 0
 --- !u!114 &2779557199329935952
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -854,9 +856,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 0}
   animator: {fileID: 0}
+  characterAnimatorManager: {fileID: 0}
   characterNetworkManager: {fileID: 0}
+  isPerformingAction: 0
+  isJumping: 0
+  isGrounded: 1
+  applyRootMotion: 0
+  canRotate: 0
+  canMove: 0
   playerAnimator: {fileID: 0}
   playerMotionController: {fileID: 0}
+  playerNetworkManager: {fileID: 0}
 --- !u!114 &3412998676494866881
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -869,37 +879,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a90d844629275134b89ffdd3d8d29b05, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gravityForce: -30
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 64
+  groundCheckSphereRadius: 0.3
+  yVelocity: {x: 0, y: 0, z: 0}
+  groundedYVelocity: -20
+  fallStartVelocity: -5
   verticalMovement: 0
   horizontalMovement: 0
   moveAmount: 0
   walkingSpeed: 2
   runningSpeed: 5
+  sprintSpeed: 8
+  jumpHeight: 3
   rotationSpeed: 15
---- !u!114 &3828640982341969553
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3019723231735444134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae9c6238803c99544b0badda0e0eccf9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  networkPosition:
-    m_InternalValue: {x: 0, y: 0, z: 0}
-  networkRotation:
-    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
-  networkPositionVelocity: {x: 0, y: 0, z: 0}
-  networkPositionSmoothTime: 0.1
-  networkRotationSmoothTime: 0.1
-  horizontalNetMovement:
-    m_InternalValue: 0
-  verticalNetMovement:
-    m_InternalValue: 0
-  moveNetAmount:
-    m_InternalValue: 0
 --- !u!143 &6307815592603613782
 CharacterController:
   m_ObjectHideFlags: 0
@@ -926,6 +921,33 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0.9, z: 0}
+--- !u!114 &-8436091456959898576
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3019723231735444134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3a90623832b09ce4485ecc30411c862a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  networkPosition:
+    m_InternalValue: {x: 0, y: 0, z: 0}
+  networkRotation:
+    m_InternalValue: {x: 0, y: 0, z: 0, w: 1}
+  networkPositionVelocity: {x: 0, y: 0, z: 0}
+  networkPositionSmoothTime: 0.1
+  networkRotationSmoothTime: 0.1
+  horizontalNetMovement:
+    m_InternalValue: 0
+  verticalNetMovement:
+    m_InternalValue: 0
+  moveNetAmount:
+    m_InternalValue: 0
+  isSprinting:
+    m_InternalValue: 0
 --- !u!114 &8053191429043927268
 MonoBehaviour:
   m_ObjectHideFlags: 0

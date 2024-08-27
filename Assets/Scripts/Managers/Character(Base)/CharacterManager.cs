@@ -8,18 +8,27 @@ public class CharacterManager : NetworkBehaviour
 {
     [HideInInspector] public CharacterController characterController;
     [HideInInspector] public Animator animator;
+    [HideInInspector] public  CharacterAnimatorManager characterAnimatorManager;
     [HideInInspector] public  CharacterNetworkManager characterNetworkManager;
+
+    [Header("Flags")] public bool isPerformingAction = false;
+    public bool isGrounded = true;
+    public bool applyRootMotion = false;
+    public bool canRotate = false;
+    public bool canMove = false;
     protected virtual void Awake()
     {
         DontDestroyOnLoad(this);
         
         characterController = GetComponent<CharacterController>();
+        characterAnimatorManager = GetComponent<CharacterAnimatorManager>();
         characterNetworkManager = GetComponent<CharacterNetworkManager>();
         animator = GetComponent<Animator>();
     }
 
     protected virtual void Update()
     {
+        animator.SetBool(characterAnimatorManager._isGrounded, isGrounded);
         // Jeśli ta postać jest kontrolowana z naszej strony, przypisujemy jej sieciową pozycję i rotację naszemu transformowi
         if (IsOwner)
         {
