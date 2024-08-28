@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -7,24 +8,8 @@ public class PlayerInputManager : MonoBehaviour
     private PlayerControls _playerControls;
     public PlayerManager player;
 
-    [Header("Movement Input")] [SerializeField]
-    private Vector2 movementInput;
-
-    public float verticalInput;
-    public float horizontalInput;
-    public float moveAmount;
-
-    [Header("Camera Movement Input")] [SerializeField]
-    private Vector2 cameraInput;
-
-    public float cameraVerticalInput;
-    public float cameraHorizontalInput;
-
-    [Header("Action Input")] [SerializeField]
-    private bool interact;
-
-    [SerializeField] private bool sprintInput;
-    [SerializeField] private bool jumpInput;
+    private GlobalInputManager _globalInput;
+    
 
 
     private void Awake()
@@ -45,6 +30,8 @@ public class PlayerInputManager : MonoBehaviour
         instance.enabled = false; // Wyłączenie instancji na starcie; będzie włączona tylko w określonej scenie
 
         if (_playerControls != null) _playerControls.Disable();
+        
+        _globalInput = GlobalInputManager.instance;
     }
 
     private void OnSceneChange(Scene oldScene, Scene newScene)
@@ -66,14 +53,16 @@ public class PlayerInputManager : MonoBehaviour
         {
             _playerControls = new PlayerControls();
 
-            _playerControls.PlayerMovement.Movement.performed += i => movementInput = i.ReadValue<Vector2>();
-            _playerControls.CameraMovement.Movement.performed += i => cameraInput = i.ReadValue<Vector2>();
+            _playerControls.PlayerMovement.Movement.performed += i => _globalInput.movementInput = i.ReadValue<Vector2>();
+            _playerControls.CameraMovement.Movement.performed += i => _globalInput.cameraInput = i.ReadValue<Vector2>();
 
             // shift + hold decyduje o fladze dla sprintu
-            _playerControls.PlayerActions.Sprint.performed += i => sprintInput = true;
-            _playerControls.PlayerActions.Sprint.canceled += i => sprintInput = false;
+            _playerControls.PlayerActions.Sprint.performed += i => _globalInput.sprintInput = true;
+            _playerControls.PlayerActions.Sprint.canceled += i => _globalInput.sprintInput = false;
             //Jump input
-            _playerControls.PlayerActions.Jump.performed += i => jumpInput = true;
+            _playerControls.PlayerActions.Jump.performed += i => _globalInput.jumpInput = true;
+            
+            _playerControls.PlayerActions.Interact .performed += i => _globalInput.interactInput = true;
         }
 
         _playerControls.Enable();
@@ -111,33 +100,33 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandlePlayerMovementInput()
     {
-        verticalInput = movementInput.y;
-        horizontalInput = movementInput.x;
+        _globalInput.verticalInput = _globalInput.movementInput.y;
+        _globalInput.horizontalInput = _globalInput.movementInput.x;
 
         // Clampuje wartość moveAmount między 0 a 1, sumując absolutne wartości inputu. 
         // Zapobiega to przekroczeniu 1, co mogłoby powodować nieprzewidziane zachowanie.
-        moveAmount = Mathf.Clamp01(Mathf.Abs(verticalInput) + Mathf.Abs(horizontalInput));
+        _globalInput.moveAmount = Mathf.Clamp01(Mathf.Abs(_globalInput.verticalInput) + Mathf.Abs(_globalInput.horizontalInput));
 
         // Przeskalowujemy moveAmount do 0.5 lub 1, aby zapewnić bardziej responsywne sterowanie.
         // Dzięki temu minimalny ruch jest bardziej odczuwalny, a pełna prędkość osiągana jest przy większym wejściu.
-        if (moveAmount <= 0.5 && moveAmount > 0)
-            moveAmount = 0.5f;
-        else if (moveAmount >= 0.5 && moveAmount <= 1) moveAmount = 1;
+        if (_globalInput.moveAmount <= 0.5 && _globalInput.moveAmount > 0)
+            _globalInput.moveAmount = 0.5f;
+        else if (_globalInput.moveAmount >= 0.5 && _globalInput.moveAmount <= 1) _globalInput.moveAmount = 1;
 
-        player.playerAnimator.UpdateAnimatorMovementValues(0, moveAmount,
+        player.playerAnimator.UpdateAnimatorMovementValues(0, _globalInput.moveAmount,
             player.playerNetworkManager.isSprinting.Value);
     }
 
     private void HandleCameraMovementInput()
     {
         // Obsługa wejścia z myszy/PADA
-        cameraVerticalInput = cameraInput.y;
-        cameraHorizontalInput = cameraInput.x;
+        _globalInput.cameraVerticalInput = _globalInput.cameraInput.y;
+        _globalInput.cameraHorizontalInput = _globalInput.cameraInput.x;
     }
 
     private void HandleSprintInput()
     {
-        if (sprintInput)
+        if (_globalInput.sprintInput)
             player.playerMotionController.HandleSprinting();
         else
             player.playerNetworkManager.isSprinting.Value = false;
@@ -145,9 +134,9 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleJumpInput()
     {
-        if (jumpInput)
+        if (_globalInput.jumpInput)
         {
-            jumpInput = false;
+            _globalInput.jumpInput = false;
 
             player.playerMotionController.HandleJumping();
         }

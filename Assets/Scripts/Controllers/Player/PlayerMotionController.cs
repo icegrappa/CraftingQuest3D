@@ -60,9 +60,9 @@ public class PlayerMotionController : CharacterMotionController
 
     private void UpdateMovementsValues()
     {
-        verticalMovement = PlayerInputManager.instance.verticalInput;
-        horizontalMovement = PlayerInputManager.instance.horizontalInput;
-        moveAmount = PlayerInputManager.instance.moveAmount;
+        verticalMovement = GlobalInputManager.instance.verticalInput;
+        horizontalMovement = GlobalInputManager.instance.horizontalInput;
+        moveAmount = GlobalInputManager.instance.moveAmount;
     }
 
     private void HandleGroundedMovement()
@@ -133,8 +133,8 @@ public class PlayerMotionController : CharacterMotionController
     private Vector3 CalculateFallMovementDirection()
     {
         // Obliczenie kierunku na podstawie kierunku kamery i wejścia gracza
-        Vector3 direction = CameraController.instance.transform.forward * PlayerInputManager.instance.verticalInput;
-        direction += CameraController.instance.transform.right * PlayerInputManager.instance.horizontalInput;
+        Vector3 direction = CameraController.instance.transform.forward * GlobalInputManager.instance.verticalInput;
+        direction += CameraController.instance.transform.right * GlobalInputManager.instance.horizontalInput;
         direction.y = 0; // Ignorujemy komponent Y, ponieważ chcemy się poruszać tylko na płaszczyźnie XZ
         return direction;
     }
@@ -151,7 +151,7 @@ public class PlayerMotionController : CharacterMotionController
             return sprintSpeed;
         }
 
-        return PlayerInputManager.instance.moveAmount > 0.5f ? runningSpeed : walkingSpeed;
+        return GlobalInputManager.instance.moveAmount > 0.5f ? runningSpeed : walkingSpeed;
     }
 
     private void HandleRotation()
@@ -212,8 +212,8 @@ public class PlayerMotionController : CharacterMotionController
     {
         // Pobierz kierunek skoku na podstawie kierunku kamery i wejścia gracza
         Vector3 calculatedJumpDirection = CameraController.instance.cameraObject.transform.forward * 
-                                          PlayerInputManager.instance.verticalInput;
-        calculatedJumpDirection += CameraController.instance.cameraObject.transform.right * PlayerInputManager.instance.horizontalInput;
+                                          GlobalInputManager.instance.verticalInput;
+        calculatedJumpDirection += CameraController.instance.cameraObject.transform.right * GlobalInputManager.instance.horizontalInput;
         calculatedJumpDirection.y = 0;
 
         if (calculatedJumpDirection != Vector3.zero)
@@ -223,7 +223,7 @@ public class PlayerMotionController : CharacterMotionController
             {
                 calculatedJumpDirection *= 1;
             }
-            else if (PlayerInputManager.instance.moveAmount > 0.5)
+            else if (GlobalInputManager.instance.moveAmount > 0.5)
             {
                 calculatedJumpDirection *= 0.5f;
             }

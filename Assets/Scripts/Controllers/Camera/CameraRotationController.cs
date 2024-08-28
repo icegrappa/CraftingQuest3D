@@ -24,10 +24,10 @@ public class CameraRotationController
     public void UpdateCameraRotation()
     {
         // Obracamy kamerę w lewo/prawo na podstawie inputu
-        leftAndRightLookAngle += PlayerInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed * Time.deltaTime;
+        leftAndRightLookAngle += GlobalInputManager.instance.cameraHorizontalInput * leftAndRightRotationSpeed * Time.deltaTime;
     
         // Obracamy kamerę w gore/dol na podstawie inputu
-        upAndDownLookAngle -= PlayerInputManager.instance.cameraVerticalInput * upAndDownRotationSpeed * Time.deltaTime;
+        upAndDownLookAngle -= GlobalInputManager.instance.cameraVerticalInput * upAndDownRotationSpeed * Time.deltaTime;
     
         // Ograniczamy kat obrotu kamery żeby nie przekroczyć max/min
         upAndDownLookAngle = Mathf.Clamp(upAndDownLookAngle, minimumPivot, maximumPivot);

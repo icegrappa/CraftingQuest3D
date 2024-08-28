@@ -6,8 +6,9 @@ public class CharacterAnimatorManager : MonoBehaviour
 
     private int _vertical;
     private int _horizontal;
-    public int _isGrounded;
-    public int _inAirTimer;
+    
+    [HideInInspector]public int _isGrounded;
+    [HideInInspector]public int _inAirTimer;
 
     protected virtual void Awake()
     {

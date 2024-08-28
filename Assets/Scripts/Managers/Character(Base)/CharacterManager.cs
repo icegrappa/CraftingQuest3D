@@ -11,7 +11,7 @@ public class CharacterManager : NetworkBehaviour
     [HideInInspector] public  CharacterAnimatorManager characterAnimatorManager;
     [HideInInspector] public  CharacterNetworkManager characterNetworkManager;
 
-    [Header("Flags")] public bool isPerformingAction = false;
+    [Header("Flagi")] public bool isPerformingAction = false;
     public bool isGrounded = true;
     public bool applyRootMotion = false;
     public bool canRotate = false;

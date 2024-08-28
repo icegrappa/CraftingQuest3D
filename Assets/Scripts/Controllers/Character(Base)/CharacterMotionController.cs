@@ -5,9 +5,10 @@ using UnityEngine;
 
 public class CharacterMotionController : MonoBehaviour
 {
-    private CharacterManager _character; 
+    private CharacterManager _character;
 
     [Header("Ustawienia Grawitacji")]
+    [SerializeField] public bool canApplyGravity = false;
     [SerializeField] protected float gravityForce = -30f;
     [SerializeField] protected LayerMask groundLayer; // Layer dla isGrounding 
     [SerializeField] private float groundCheckSphereRadius = 1f; // Promień sfery, która sprawdza, czy postać stoi na ziemi
@@ -68,6 +69,8 @@ public class CharacterMotionController : MonoBehaviour
 
     private void ApplyGravityAndMoveCharacter()
     {
+        //sprawdzamy flaghe
+        if (!canApplyGravity) return;
         // Dodajemy siłę grawitacji do prędkości Y
         yVelocity.y += gravityForce * Time.deltaTime;
 

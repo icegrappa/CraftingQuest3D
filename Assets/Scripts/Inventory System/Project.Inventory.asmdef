@@ -1,0 +1,16 @@
+{
+    "name": "Project.Inventory",
+    "rootNamespace": "",
+    "references": [
+        "GUID:665bfe3417c69254bbb17d0ffe1b02f3"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -78,6 +78,15 @@
             "id": "052a73f8-7817-45f0-a6c0-efe19d78d27f",
             "actions": [
                 {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "325ecc3f-368f-4b9d-b90f-009a1bb9bee4",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Sprint",
                     "type": "PassThrough",
                     "id": "a54c4f24-75dc-49a7-8884-97b180ad5aa8",
@@ -88,7 +97,7 @@
                 },
                 {
                     "name": "Jump",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "7ac6f7ad-85d1-4950-a8bd-9b32eb03d024",
                     "expectedControlType": "Button",
                     "processors": "",
@@ -112,10 +121,21 @@
                     "name": "",
                     "id": "70eead7b-3753-4570-871e-33fd8b2f5ec8",
                     "path": "<Keyboard>/space",
-                    "interactions": "",
+                    "interactions": "Tap",
                     "processors": "",
                     "groups": "",
                     "action": "Jump",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c1a23747-63c5-400e-bc98-2d4122a9d7a5",
+                    "path": "<Keyboard>/e",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
