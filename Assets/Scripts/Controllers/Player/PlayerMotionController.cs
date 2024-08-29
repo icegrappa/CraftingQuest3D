@@ -54,6 +54,7 @@ public class PlayerMotionController : CharacterMotionController
     {
         HandleGroundedMovement();
         HandleRotation();
+        
         HandleJumpingMovement();
         HandleFreeFallMovement();
     }

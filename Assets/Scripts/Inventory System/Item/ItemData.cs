@@ -21,6 +21,8 @@ public class ItemData : ScriptableObject
     // ikona która reprezentuje przedmiot w UI
     public Sprite Icon;
 
+    [SerializeField] public GameObject itemPrefab;
+
     // maksymalna liczba przedmiotów które mogą być zgrupowane razem
     [SerializeField] public int MaxStackSize;
 

@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -9,8 +10,6 @@ public class PlayerInputManager : MonoBehaviour
     public PlayerManager player;
 
     private GlobalInputManager _globalInput;
-    
-
 
     private void Awake()
     {
@@ -33,7 +32,7 @@ public class PlayerInputManager : MonoBehaviour
         
         _globalInput = GlobalInputManager.instance;
     }
-
+    
     private void OnSceneChange(Scene oldScene, Scene newScene)
     {
         // Sprawdza, czy nowo załadowana scena to główna scena świata; jeśli tak, aktywuje instancję
@@ -53,16 +52,26 @@ public class PlayerInputManager : MonoBehaviour
         {
             _playerControls = new PlayerControls();
 
+            // INPUT RUCHU
             _playerControls.PlayerMovement.Movement.performed += i => _globalInput.movementInput = i.ReadValue<Vector2>();
             _playerControls.CameraMovement.Movement.performed += i => _globalInput.cameraInput = i.ReadValue<Vector2>();
 
+            // INPUT AKCJI GRACZA
             // shift + hold decyduje o fladze dla sprintu
             _playerControls.PlayerActions.Sprint.performed += i => _globalInput.sprintInput = true;
             _playerControls.PlayerActions.Sprint.canceled += i => _globalInput.sprintInput = false;
             //Jump input
             _playerControls.PlayerActions.Jump.performed += i => _globalInput.jumpInput = true;
             
-            _playerControls.PlayerActions.Interact .performed += i => _globalInput.interactInput = true;
+            _playerControls.PlayerActions.Interact.performed += i => _globalInput.interactInput = true;
+            
+            //INPUT UI
+            _playerControls.PlayerUI.Inventory.performed += i => _globalInput.inventoryInput = true;
+            _playerControls.PlayerUI.Stack.performed += i => _globalInput.stackInput = true;
+            _playerControls.PlayerUI.Stack.canceled += i => _globalInput.stackInput = false;
+            
+            _playerControls.PlayerUI.DelateItemUI.performed += i => _globalInput.deleteItemUIInput = true;
+            _playerControls.PlayerUI.DelateItemUI.canceled += i => _globalInput.deleteItemUIInput = false;
         }
 
         _playerControls.Enable();
@@ -92,10 +101,12 @@ public class PlayerInputManager : MonoBehaviour
 
     private void HandleInput()
     {
+        if(_globalInput.isInventoryOpen) return;
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
         HandleSprintInput();
         HandleJumpInput();
+        HandleInventoryInput();
     }
 
     private void HandlePlayerMovementInput()
@@ -139,6 +150,14 @@ public class PlayerInputManager : MonoBehaviour
             _globalInput.jumpInput = false;
 
             player.playerMotionController.HandleJumping();
+        }
+    }
+
+    private void HandleInventoryInput()
+    {
+        if (_globalInput.inventoryInput)
+        {
+            _globalInput.ToggleInventory();
         }
     }
 }

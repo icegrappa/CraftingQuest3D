@@ -868,6 +868,7 @@ MonoBehaviour:
   playerAnimator: {fileID: 0}
   playerMotionController: {fileID: 0}
   playerNetworkManager: {fileID: 0}
+  playerInventory: {fileID: 0}
   startingPosition: {x: 0, y: 10, z: 0}
 --- !u!114 &3412998676494866881
 MonoBehaviour:
@@ -885,7 +886,7 @@ MonoBehaviour:
   gravityForce: -30
   groundLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   groundCheckSphereRadius: 0.3
   yVelocity: {x: 0, y: 0, z: 0}
   groundedYVelocity: -20

@@ -132,10 +132,78 @@
                     "name": "",
                     "id": "c1a23747-63c5-400e-bc98-2d4122a9d7a5",
                     "path": "<Keyboard>/e",
-                    "interactions": "Tap",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
                     "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Player UI",
+            "id": "48289053-5ec8-4fe0-a7ee-8249b0ff4d08",
+            "actions": [
+                {
+                    "name": "Inventory",
+                    "type": "Button",
+                    "id": "3ff5f02f-4746-45e4-86a4-17b6346c0f61",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Stack",
+                    "type": "PassThrough",
+                    "id": "a72aee16-83fb-445f-b6a1-4cef90223ee6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "DelateItemUI",
+                    "type": "Button",
+                    "id": "ad9e9d57-0598-41b8-8ce4-0954d6eae867",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Hold(duration=0.1)",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d21898c6-c6b5-4b57-85e1-6946fb2a54a3",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Inventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "ea195ffa-89dd-4e13-ad4d-502502b60ff8",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Stack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1ff272a8-e8fc-4039-8e72-36e6cac57e46",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DelateItemUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

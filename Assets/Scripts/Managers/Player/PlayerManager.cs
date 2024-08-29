@@ -7,6 +7,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerAnimatorManager playerAnimator;
     [HideInInspector] public PlayerMotionController playerMotionController;
     [HideInInspector] public PlayerNetworkManager playerNetworkManager;
+    [HideInInspector] public InventoryContainer playerInventory;
     
     [Header("Pozycja startowa")]
     public Vector3 startingPosition; // poczatkowa pozycja gracza 
@@ -17,6 +18,7 @@ public class PlayerManager : CharacterManager
         playerMotionController = GetComponent<PlayerMotionController>();
         playerNetworkManager = GetComponent<PlayerNetworkManager>();
         playerAnimator = GetComponent<PlayerAnimatorManager>();
+        playerInventory = GetComponent<InventoryContainer>();
     }
 
     protected override void Update()
@@ -41,6 +43,7 @@ public class PlayerManager : CharacterManager
             CameraController.instance.InitializeCamera(this);
             PlayerInputManager.instance.player = this;
             GameManager.instance.OnWorldSceneLoaded += HandleWorldSceneLoaded;
+            InventoryManager.instance.InitializeAllInventories(playerInventory);
         }
     }
 
@@ -65,6 +68,7 @@ public class PlayerManager : CharacterManager
     {
         // Po tym jak uda nam się poprawnie załadować scenę, teleportuj gracza do startingPosition
         Debug.Log("loaded world!");
+        GlobalInputManager.instance.isInWorldScene = true;
         StartCoroutine(TeleportPlayer(startingPosition)); // teleport
     }
     

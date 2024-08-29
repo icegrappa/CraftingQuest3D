@@ -154,10 +154,78 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""c1a23747-63c5-400e-bc98-2d4122a9d7a5"",
                     ""path"": ""<Keyboard>/e"",
-                    ""interactions"": ""Tap"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
+            ""name"": ""Player UI"",
+            ""id"": ""48289053-5ec8-4fe0-a7ee-8249b0ff4d08"",
+            ""actions"": [
+                {
+                    ""name"": ""Inventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""3ff5f02f-4746-45e4-86a4-17b6346c0f61"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Stack"",
+                    ""type"": ""PassThrough"",
+                    ""id"": ""a72aee16-83fb-445f-b6a1-4cef90223ee6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.1)"",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DelateItemUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""ad9e9d57-0598-41b8-8ce4-0954d6eae867"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Hold(duration=0.1)"",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d21898c6-c6b5-4b57-85e1-6946fb2a54a3"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Inventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ea195ffa-89dd-4e13-ad4d-502502b60ff8"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Stack"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1ff272a8-e8fc-4039-8e72-36e6cac57e46"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DelateItemUI"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -213,6 +281,11 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerActions_Interact = m_PlayerActions.FindAction("Interact", throwIfNotFound: true);
         m_PlayerActions_Sprint = m_PlayerActions.FindAction("Sprint", throwIfNotFound: true);
         m_PlayerActions_Jump = m_PlayerActions.FindAction("Jump", throwIfNotFound: true);
+        // Player UI
+        m_PlayerUI = asset.FindActionMap("Player UI", throwIfNotFound: true);
+        m_PlayerUI_Inventory = m_PlayerUI.FindAction("Inventory", throwIfNotFound: true);
+        m_PlayerUI_Stack = m_PlayerUI.FindAction("Stack", throwIfNotFound: true);
+        m_PlayerUI_DelateItemUI = m_PlayerUI.FindAction("DelateItemUI", throwIfNotFound: true);
         // Camera Movement
         m_CameraMovement = asset.FindActionMap("Camera Movement", throwIfNotFound: true);
         m_CameraMovement_Movement = m_CameraMovement.FindAction("Movement", throwIfNotFound: true);
@@ -382,6 +455,68 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     }
     public PlayerActionsActions @PlayerActions => new PlayerActionsActions(this);
 
+    // Player UI
+    private readonly InputActionMap m_PlayerUI;
+    private List<IPlayerUIActions> m_PlayerUIActionsCallbackInterfaces = new List<IPlayerUIActions>();
+    private readonly InputAction m_PlayerUI_Inventory;
+    private readonly InputAction m_PlayerUI_Stack;
+    private readonly InputAction m_PlayerUI_DelateItemUI;
+    public struct PlayerUIActions
+    {
+        private @PlayerControls m_Wrapper;
+        public PlayerUIActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Inventory => m_Wrapper.m_PlayerUI_Inventory;
+        public InputAction @Stack => m_Wrapper.m_PlayerUI_Stack;
+        public InputAction @DelateItemUI => m_Wrapper.m_PlayerUI_DelateItemUI;
+        public InputActionMap Get() { return m_Wrapper.m_PlayerUI; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(PlayerUIActions set) { return set.Get(); }
+        public void AddCallbacks(IPlayerUIActions instance)
+        {
+            if (instance == null || m_Wrapper.m_PlayerUIActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_PlayerUIActionsCallbackInterfaces.Add(instance);
+            @Inventory.started += instance.OnInventory;
+            @Inventory.performed += instance.OnInventory;
+            @Inventory.canceled += instance.OnInventory;
+            @Stack.started += instance.OnStack;
+            @Stack.performed += instance.OnStack;
+            @Stack.canceled += instance.OnStack;
+            @DelateItemUI.started += instance.OnDelateItemUI;
+            @DelateItemUI.performed += instance.OnDelateItemUI;
+            @DelateItemUI.canceled += instance.OnDelateItemUI;
+        }
+
+        private void UnregisterCallbacks(IPlayerUIActions instance)
+        {
+            @Inventory.started -= instance.OnInventory;
+            @Inventory.performed -= instance.OnInventory;
+            @Inventory.canceled -= instance.OnInventory;
+            @Stack.started -= instance.OnStack;
+            @Stack.performed -= instance.OnStack;
+            @Stack.canceled -= instance.OnStack;
+            @DelateItemUI.started -= instance.OnDelateItemUI;
+            @DelateItemUI.performed -= instance.OnDelateItemUI;
+            @DelateItemUI.canceled -= instance.OnDelateItemUI;
+        }
+
+        public void RemoveCallbacks(IPlayerUIActions instance)
+        {
+            if (m_Wrapper.m_PlayerUIActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IPlayerUIActions instance)
+        {
+            foreach (var item in m_Wrapper.m_PlayerUIActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_PlayerUIActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public PlayerUIActions @PlayerUI => new PlayerUIActions(this);
+
     // Camera Movement
     private readonly InputActionMap m_CameraMovement;
     private List<ICameraMovementActions> m_CameraMovementActionsCallbackInterfaces = new List<ICameraMovementActions>();
@@ -436,6 +571,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnInteract(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
+    }
+    public interface IPlayerUIActions
+    {
+        void OnInventory(InputAction.CallbackContext context);
+        void OnStack(InputAction.CallbackContext context);
+        void OnDelateItemUI(InputAction.CallbackContext context);
     }
     public interface ICameraMovementActions
     {

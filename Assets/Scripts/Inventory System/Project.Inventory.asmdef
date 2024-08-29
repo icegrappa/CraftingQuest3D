@@ -2,7 +2,10 @@
     "name": "Project.Inventory",
     "rootNamespace": "",
     "references": [
-        "GUID:665bfe3417c69254bbb17d0ffe1b02f3"
+        "GUID:665bfe3417c69254bbb17d0ffe1b02f3",
+        "GUID:6055be8ebefd69e48b49212b09b47b2f",
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:3850a0e6bb5d91a44aa83533266abc46"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

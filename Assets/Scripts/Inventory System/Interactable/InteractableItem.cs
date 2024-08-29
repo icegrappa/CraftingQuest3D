@@ -1,16 +1,21 @@
+using System;
+using System.Collections;
+using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class InteractableItem : MonoBehaviour, IInteractable
 {
-    [SerializeField] private ItemData itemData;
-    [SerializeField] private float interactionRange = 2f;
-    [SerializeField] private float angleThreshold = 45f;
-    [SerializeField] private Canvas interactionCanvas;
+    [SerializeField] private ItemData itemData; // itemdata dla reprzetnacji itemu w swiecie 
+    [SerializeField] private float interactionRange = 2f; // zakres interakcji
+    [SerializeField] private float angleThreshold = 45f; // kat pomiedzy puntkeim interakcji a graczem
+    [SerializeField] public float checkInterval = 0.1f; // Częstotliwosc sprawdzania kolizji
+    [SerializeField] private Canvas interactionCanvas; 
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask interactableLayer;
 
     private readonly Collider[] hitColliders = new Collider[10];
     private Transform playerTransform;
+    private GlobalInputManager _globalInput;
 
     public float CurrentDistanceToPlayer { get; private set; }
 
@@ -19,32 +24,63 @@ public class InteractableItem : MonoBehaviour, IInteractable
         if (interactionCanvas != null) HideInteractionPrompt();
     }
 
-    private void Update()
+    private void Start()
     {
-        if (playerTransform == null) FindPlayer(); // Szukamy gracza jeśli jeszcze go nie mamy
-
-        if (playerTransform != null)
+        _globalInput = GlobalInputManager.instance;
+        
+        StartCoroutine(CheckForPlayerCoroutine());
+    }
+    
+    private IEnumerator CheckForPlayerCoroutine()
+    {
+        while (true)
         {
-            // Aktualizujemy odległość do gracza
-            CurrentDistanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
-
-            // Sprawdzamy czy gracz może wchodzić w interakcję z tym obiektem
-            if (IsInteractable(playerTransform))
+            if (playerTransform == null)
             {
-                ShowInteractionPrompt(); // Pokazujemy prompt interakcji
+                FindPlayer();
+            }
 
-                if (GlobalInputManager.instance != null)
-                {
-                    // Przekazujemy metodę Interact jako akcję
-                    GlobalInputManager.instance.HandleInteractionInput(() => Interact(playerTransform));
-                }
-            }
-            else
-            {
-                HideInteractionPrompt(); // Ukrywamy prompt, jeśli nie można wchodzić w interakcję
-            }
+            yield return new WaitForSeconds(checkInterval); // Używamy wartości z Inspectora
         }
     }
+
+    private void Update()
+    {
+        if (_globalInput == null || playerTransform == null) return; // jezlei nie ma ggracza 
+      
+        // Aktualizujemy odległość do gracza
+        CurrentDistanceToPlayer = Vector3.Distance(transform.position, playerTransform.position);
+
+        // Sprawdzamy, czy obiekt ma mozliwosci nterakcji
+        if (IsInteractable(playerTransform))
+        {
+            ShowInteractionPrompt(); //
+            InteractableManager.AddInteractable(this); 
+
+            // Sprawdzamy, czy użytkownik wywołał interakcję
+            if (_globalInput.interactInput)
+            {
+                Interact(playerTransform); 
+                _globalInput.interactInput = false; // Resetujemy stan interakcji
+                InteractableManager.RemoveInteractable(this); //
+            }
+        }
+        else
+        {
+            HideInteractionPrompt();
+            playerTransform = null;
+            InteractableManager.RemoveInteractable(this); //
+        }
+
+        // Resetujemy stan interakcji jeśli nie ma żadnych interaktywnych obiektów w pobliżu
+        if (!InteractableManager.HasInteractables())
+        {
+            _globalInput.interactInput = false;
+        }
+    }
+
+
+
 
     private void FindPlayer()
     {
@@ -131,7 +167,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         if (inventory != null)
 
             if (inventory.InventorySystem.AddItem(itemData, 1))
-                Destroy(gameObject); // Dodajemy item do inventory, jeśli się udało, niszczymy obiekt
+                Destroy(gameObject.transform.root.gameObject); // Dodajemy item do inventory, jeśli się udało, niszczymy obiekt
     }
 
     public void HideInteractionPrompt()

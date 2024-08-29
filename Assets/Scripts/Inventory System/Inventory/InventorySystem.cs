@@ -10,6 +10,9 @@ public class InventorySystem
 {
     // prywatna lista slotów inventoryy
     [SerializeField] private List<InventorySlot> inventorySlots;
+    
+    // publiczny getter dla inventorySlots, umożliwiający tylko odczyt
+    public IReadOnlyList<InventorySlot> InventorySlots => inventorySlots;
 
     // publiczna właściwość zwracająca liczbę slotów inwentarza
     public int InventorySize => inventorySlots.Count;

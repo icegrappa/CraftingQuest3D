@@ -1,4 +1,5 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 [Serializable]
@@ -17,6 +18,12 @@ public class InventorySlot
         itemData = source;
         stackSize = amount;
     }
+    
+    // zwraca kop[oe tego obiektu z aktualnym data i sizem stacka
+    public InventorySlot Clone()
+    {
+        return new InventorySlot(this.ItemData, this.StackSize);
+    }
 
     // Domyślny konstruktor, inicjalizujący pusty slot
     public InventorySlot()
@@ -30,6 +37,22 @@ public class InventorySlot
     {
         itemData = null;
         stackSize = -1;
+    }
+
+    public void AssignItem(InventorySlot inventorySlot)
+    {
+        if (itemData == inventorySlot.ItemData)
+        {
+            AddToStack(inventorySlot.stackSize);
+        }
+        else
+        {
+            itemData = inventorySlot.ItemData;
+            stackSize = 0;
+            AddToStack(inventorySlot.stackSize);
+        }
+        
+        // jezeli to nie ten sam item zamien
     }
 
     public void UpdateInventorySlot(ItemData data, int amount)
@@ -61,5 +84,22 @@ public class InventorySlot
     public void RemoveFromStack(int amount)
     {
         stackSize -= amount;
+    }
+
+    public bool SplitStack(out InventorySlot splitStack)
+    {
+        if (stackSize <= 1)
+        {
+            splitStack = null;
+            return false;
+        }
+
+        int halfStack = Mathf.RoundToInt((stackSize / 2));
+        RemoveFromStack(halfStack);
+
+        splitStack = new InventorySlot(itemData, halfStack);
+        
+        // jezeli mamy 4 itemy i trzymamy stack to podzielimy ten stack przez 2 
+        return true;
     }
 }
