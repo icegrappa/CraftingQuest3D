@@ -84,6 +84,10 @@ public class InventorySlot
     public void RemoveFromStack(int amount)
     {
         stackSize -= amount;
+        if (stackSize <= 0)
+        {
+            ClearSlot(); // Clear the slot when the stack size reaches zero or below
+        }
     }
 
     public bool SplitStack(out InventorySlot splitStack)

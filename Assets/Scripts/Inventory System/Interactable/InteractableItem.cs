@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using UnityEditor.Build.Content;
 using UnityEngine;
 
 public class InteractableItem : MonoBehaviour, IInteractable
@@ -9,21 +8,16 @@ public class InteractableItem : MonoBehaviour, IInteractable
     [SerializeField] private float interactionRange = 2f; // zakres interakcji
     [SerializeField] private float angleThreshold = 45f; // kat pomiedzy puntkeim interakcji a graczem
     [SerializeField] public float checkInterval = 0.1f; // Częstotliwosc sprawdzania kolizji
-    [SerializeField] private Canvas interactionCanvas; 
     [SerializeField] private LayerMask playerLayer;
     [SerializeField] private LayerMask interactableLayer;
+    [SerializeField] private string interactionMessage;
 
     private readonly Collider[] hitColliders = new Collider[10];
     private Transform playerTransform;
     private GlobalInputManager _globalInput;
 
     public float CurrentDistanceToPlayer { get; private set; }
-
-    private void Awake()
-    {
-        if (interactionCanvas != null) HideInteractionPrompt();
-    }
-
+    
     private void Start()
     {
         _globalInput = GlobalInputManager.instance;
@@ -54,7 +48,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         // Sprawdzamy, czy obiekt ma mozliwosci nterakcji
         if (IsInteractable(playerTransform))
         {
-            ShowInteractionPrompt(); //
+            InventoryManager.instance.ShowInteractionPrompt(itemData, 1, interactionMessage);  //
             InteractableManager.AddInteractable(this); 
 
             // Sprawdzamy, czy użytkownik wywołał interakcję
@@ -67,16 +61,10 @@ public class InteractableItem : MonoBehaviour, IInteractable
         }
         else
         {
-            HideInteractionPrompt();
             playerTransform = null;
             InteractableManager.RemoveInteractable(this); //
         }
-
-        // Resetujemy stan interakcji jeśli nie ma żadnych interaktywnych obiektów w pobliżu
-        if (!InteractableManager.HasInteractables())
-        {
-            _globalInput.interactInput = false;
-        }
+        
     }
 
 
@@ -132,7 +120,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
 
     public bool IsObstructed(Transform playerTransform)
     {
-        var pointer = playerTransform.GetComponentInChildren<PositionPointer>();
+        var pointer = playerTransform.GetComponent<GlobalEventHandler>().GetTargetTransform();
 
         if (pointer != null)
         {
@@ -152,29 +140,34 @@ public class InteractableItem : MonoBehaviour, IInteractable
         return angle <= angleThreshold;
     }
 
-    public void ShowInteractionPrompt()
-    {
-        if (interactionCanvas != null) interactionCanvas.gameObject.SetActive(true);
-    }
-
     
     public void Interact(Transform interactingTransform)
     {
-        Debug.Log("Interacting with the item");
-        HideInteractionPrompt(); // Ukrywamy prompt po interakcji
+        Debug.Log("Interakcja z itemem");
+        InventoryManager.instance.HideInteractionPrompt(); // Ukrywamy prompt po interakcji
 
         var inventory = interactingTransform.GetComponent<InventoryContainer>();
+        var globalHandler = interactingTransform.GetComponent<GlobalEventHandler>();
+        
         if (inventory != null)
 
+            globalHandler.InvokeGlobalEvent();
             if (inventory.InventorySystem.AddItem(itemData, 1))
-                Destroy(gameObject.transform.root.gameObject); // Dodajemy item do inventory, jeśli się udało, niszczymy obiekt
+              
+            if (gameObject.transform.parent != null)
+            {
+                // If the GameObject has a parent, destroy the parent GameObject
+                Destroy(gameObject.transform.parent.gameObject);
+            }
+            else
+            {
+                // If the GameObject has no parent, destroy the current GameObject
+                Destroy(gameObject);
+            }
+
     }
 
-    public void HideInteractionPrompt()
-    {
-        if (interactionCanvas != null) interactionCanvas.gameObject.SetActive(false);
-    }
-
+  
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.yellow;

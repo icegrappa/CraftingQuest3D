@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1203648524753806899}
   - component: {fileID: 6860238909310434751}
   - component: {fileID: 1963269402345232169}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Big Terrain 4
   m_TagString: Untagged
   m_Icon: {fileID: 0}

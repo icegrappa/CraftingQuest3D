@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ece4140848abf724ba4af83e79154bd5, type: 3}
+  m_Name: Wooden Plank
+  m_EditorClassIdentifier: 
+  ID: 4
+  ItemName: Wooden Plank
+  itemInfo: A flat piece of wood. Useful for crafting and building.
+  Icon: {fileID: 21300000, guid: 0c5ede73adaade44498e316847f74b0f, type: 3}
+  itemPrefab: {fileID: 7775073980775800782, guid: 006dab4932e11e748a3001b5c0d93b50, type: 3}
+  MaxStackSize: 10

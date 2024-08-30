@@ -2,7 +2,8 @@
     "name": "Project.GameManager",
     "rootNamespace": "",
     "references": [
-        "GUID:75469ad4d38634e559750d17036d5f7c"
+        "GUID:75469ad4d38634e559750d17036d5f7c",
+        "GUID:665bfe3417c69254bbb17d0ffe1b02f3"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -778,13 +778,15 @@ GameObject:
   m_Component:
   - component: {fileID: 866176590362465974}
   - component: {fileID: 7019305814861578477}
+  - component: {fileID: 2381582142024226024}
+  - component: {fileID: 3759839491249557002}
   - component: {fileID: 4254627242011451120}
   - component: {fileID: 2779557199329935952}
   - component: {fileID: 3412998676494866881}
+  - component: {fileID: 7425700975181432442}
   - component: {fileID: 6307815592603613782}
   - component: {fileID: -8436091456959898576}
   - component: {fileID: 8053191429043927268}
-  - component: {fileID: 2044211339828947805}
   m_Layer: 8
   m_Name: Player
   m_TagString: Untagged
@@ -830,6 +832,53 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2381582142024226024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3019723231735444134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be2b63bd061837e4a8db3f65147cba6b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onGlobalEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4254627242011451120}
+        m_TargetAssemblyTypeName: PlayerAnimatorManager, Assembly-CSharp
+        m_MethodName: PlayPickUpItemAnimation
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  targetTransform: {fileID: 5127376265042470501}
+--- !u!114 &3759839491249557002
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3019723231735444134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd02c6ed9defb6d4096f936a65a54050, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  eventIdentifier: axeParticleSucess
+  onCraftingSuccess:
+    m_PersistentCalls:
+      m_Calls: []
+  onCraftingFailure:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &4254627242011451120
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -901,6 +950,21 @@ MonoBehaviour:
   jumpForwardSpeed: 4
   freeFallSpeed: 1
   rotationSpeed: 15
+--- !u!114 &7425700975181432442
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3019723231735444134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cce576dfc30380943a601858af2741b8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  inventorySize: 10
+  inventorySystem:
+    inventorySlots: []
 --- !u!143 &6307815592603613782
 CharacterController:
   m_ObjectHideFlags: 0
@@ -976,41 +1040,6 @@ MonoBehaviour:
   SpawnWithObservers: 1
   DontDestroyWithOwner: 0
   AutoObjectParentSync: 1
---- !u!114 &2044211339828947805
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3019723231735444134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8545cc990f0d274493e34abd064d9f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventorySize: 10
-  inventorySystem:
-    inventorySlots:
-    - itemData: {fileID: 0}
-      stackSize: 5
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
-    - itemData: {fileID: 0}
-      stackSize: 0
 --- !u!1 &3023822208866737603
 GameObject:
   m_ObjectHideFlags: 0
@@ -1147,7 +1176,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5127376265042470501}
-  - component: {fileID: 7249639732541502795}
   m_Layer: 0
   m_Name: Pointer
   m_TagString: Untagged
@@ -1170,18 +1198,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 866176590362465974}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7249639732541502795
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3867272579534644377}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be2b63bd061837e4a8db3f65147cba6b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &4118741211766748402
 GameObject:
   m_ObjectHideFlags: 0

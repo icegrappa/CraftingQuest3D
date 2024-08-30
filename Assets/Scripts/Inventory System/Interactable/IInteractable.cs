@@ -14,7 +14,6 @@ public interface IInteractable
     bool IsFacing(Transform playerTransform, float angleThreshold = 45f);
 
     // Metoda, która jest wywoływana, gdy gracz spełnia warunki interakcji // np aktywuj UI
-    void ShowInteractionPrompt();
 
     // Metoda do faktycznego przeprowadzenia interakcji / podenies przedmiot
     void Interact(Transform interactingTransform);

@@ -14,6 +14,12 @@ public class PlayerAnimatorManager : CharacterAnimatorManager
 
     }
 
+    public void PlayPickUpItemAnimation()
+    {
+        //animacja interakcji
+        PlayActionAnimation("PickItem", true, false, false, false);
+    }
+
     private void OnAnimatorMove()
     {
         // Jeśli gracz ma włączony Root Motion, to:

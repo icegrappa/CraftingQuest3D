@@ -7,7 +7,7 @@ public class PlayerManager : CharacterManager
     [HideInInspector] public PlayerAnimatorManager playerAnimator;
     [HideInInspector] public PlayerMotionController playerMotionController;
     [HideInInspector] public PlayerNetworkManager playerNetworkManager;
-    [HideInInspector] public InventoryContainer playerInventory;
+    [HideInInspector] public PlayerInventory playerInventory;
     
     [Header("Pozycja startowa")]
     public Vector3 startingPosition; // poczatkowa pozycja gracza 
@@ -18,7 +18,7 @@ public class PlayerManager : CharacterManager
         playerMotionController = GetComponent<PlayerMotionController>();
         playerNetworkManager = GetComponent<PlayerNetworkManager>();
         playerAnimator = GetComponent<PlayerAnimatorManager>();
-        playerInventory = GetComponent<InventoryContainer>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
 
     protected override void Update()
@@ -70,6 +70,7 @@ public class PlayerManager : CharacterManager
         Debug.Log("loaded world!");
         GlobalInputManager.instance.isInWorldScene = true;
         StartCoroutine(TeleportPlayer(startingPosition)); // teleport
+        InventoryManager.instance.EnablePlayerInventoryUI();
     }
     
     /// <summary>
@@ -93,6 +94,7 @@ public class PlayerManager : CharacterManager
         
         playerMotionController.canApplyGravity = true;
     }
+    
 
 
 }
