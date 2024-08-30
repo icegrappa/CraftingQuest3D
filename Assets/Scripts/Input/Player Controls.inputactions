@@ -171,6 +171,24 @@
                     "processors": "",
                     "interactions": "Hold(duration=0.1)",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "Escape",
+                    "type": "Button",
+                    "id": "f14300d7-6a67-4cdf-beb9-e651f32f5b51",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "H",
+                    "type": "Button",
+                    "id": "b9041d56-7d61-4c90-93a8-0a6562be6e72",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -204,6 +222,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "DelateItemUI",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c16f194a-6b16-44bf-898b-98bf94a3bb7b",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Escape",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "05795ffe-d5b7-442a-9fbd-f0a9c4a16c95",
+                    "path": "<Keyboard>/h",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "H",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

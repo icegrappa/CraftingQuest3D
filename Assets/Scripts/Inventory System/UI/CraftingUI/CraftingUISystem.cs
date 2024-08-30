@@ -115,19 +115,41 @@ public class CraftingUISystem : MonoBehaviour
 
     private void ClearRecipeList()
     {
-        // Czyści listę przepisów z interfejsu
-        if (_ingredientSlots == null) return;
-
-        /*
-        foreach (var slot in _ingredientSlots)
+        // Check if _ingredientSlots is null
+        if (_ingredientSlots == null)
         {
-            Destroy(slot.gameObject);
+            Debug.LogWarning("null.");
+            return;
         }
-        */
+
+        // Check if the list contains any slots
+        if (_ingredientSlots.Count == 0)
+        {
+            Debug.LogWarning("empty ingriedients slots");
+        }
+        else
+        {
+            // Clear the ingredient slots
+            foreach (var slot in _ingredientSlots)
+            {
+                if (slot != null)
+                {
+                    Destroy(slot.gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("null slot in list ");
+                }
+            }
+        }
+
+        // Clear and reinitialize the list
         _ingredientSlots.Clear();
-        _ingredientSlots = null;
         _ingredientSlots = new List<IngredientSlotUI>();
+
+        Debug.Log("Wyczyszcono sloty");
     }
+
 
     private void PopulateRecipeList()
     {

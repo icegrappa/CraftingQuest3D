@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
 
+    [SerializeField] private int mainMenuSceneIndex = -1;
     [SerializeField] private int worldSceneIndex = -1;
     [SerializeField] private LayerMask groundLayer;
 
@@ -110,6 +111,22 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Ładowanie sceny zakończone i w pełni aktywowane!");
     }
+    
+    public void LoadMainMenuScene()
+    {
+        StartCoroutine(LoadMainMenu());
+    }
+    
+    public IEnumerator LoadMainMenu()
+    {
+
+      SceneManager.LoadScene(mainMenuSceneIndex);
+
+      yield return null;
+
+      // Debug.Log("Ładowanie sceny głównego menu zakończone i w pełni aktywowane!");
+    }
+
 
 
     public int GetWorldSceneIndex()

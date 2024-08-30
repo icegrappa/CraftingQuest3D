@@ -21,6 +21,6 @@ MonoBehaviour:
   _craftedAmount: 1
   _successChance: 50
   successEventIdentifiers:
-  - axeParticleSucess
+  - playSucessSound
   failureEventIdentifiers:
-  - axeParticleFailure
+  - playFailureSound

@@ -46,12 +46,17 @@ public class CraftingEventManager : MonoBehaviour
             _eventHandlers = new Dictionary<string, ICraftingEventHandler>();
         }
 
-        if (!_eventHandlers.ContainsKey(identifier))
+        if (_eventHandlers.TryAdd(identifier, handler))
         {
-            _eventHandlers.Add(identifier, handler);
-            _eventHandlersDebug.Add(identifier, handler);  // Dodajemy do słownika debugowania
+            _eventHandlersDebug.Add(identifier, handler); // Dodajemy do słownika debugowania
+            Debug.Log($"Handler for {identifier} added successfully.");
+        }
+        else
+        {
+            Debug.LogWarning($"Handler for {identifier} already exists.");
         }
     }
+
 
     // Wyrejestrowanie handlera eventu
     public void UnregisterEventHandler(string identifier)
@@ -63,21 +68,33 @@ public class CraftingEventManager : MonoBehaviour
         }
     }
 
+   
     // Wywołanie eventu sukcesu craftingu
     public void TriggerCraftingSuccess(string identifier, CraftingRecipe recipe)
     {
         if (_eventHandlers.TryGetValue(identifier, out ICraftingEventHandler handler))
         {
+            Debug.Log($"Triggering crafting success for identifier: {identifier} with recipe: {recipe.CraftedItem.ItemName}");
             handler.OnCraftingSuccess(recipe);
+        }
+        else
+        {
+            Debug.LogWarning($"No handler found for crafting success with identifier: {identifier}");
         }
     }
 
-    // Wywołanie eventu niepowodzenia craftingu
+// Wywołanie eventu niepowodzenia craftingu
     public void TriggerCraftingFailure(string identifier, CraftingRecipe recipe)
     {
         if (_eventHandlers.TryGetValue(identifier, out ICraftingEventHandler handler))
         {
+            Debug.Log($"Triggering crafting failure for identifier: {identifier} with recipe: {recipe.CraftedItem.ItemName}");
             handler.OnCraftingFailure(recipe);
         }
+        else
+        {
+            Debug.LogWarning($"No handler found for crafting failure with identifier: {identifier}");
+        }
     }
+
 }

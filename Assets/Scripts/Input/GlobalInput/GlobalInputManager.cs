@@ -24,6 +24,8 @@ public class GlobalInputManager : MonoBehaviour
     [SerializeField] public bool interactInput;
     [SerializeField] public bool sprintInput;
     [SerializeField] public bool jumpInput;
+    [SerializeField] public bool escapeInput;
+    [SerializeField] public bool helpInput;
     
     [Header("Inventory Input")] 
     [SerializeField] public bool inventoryInput;
@@ -33,6 +35,7 @@ public class GlobalInputManager : MonoBehaviour
 
     [Header("Scene flag")] 
     [SerializeField] public bool isInWorldScene = false;
+    [SerializeField] public bool hasEscapeScreen = false;
     
 
     private void Awake()
@@ -57,6 +60,7 @@ public class GlobalInputManager : MonoBehaviour
     private void HandleInventoryInput()
     {
         if (!isInWorldScene) return;
+        if(hasEscapeScreen) return;
         if (inventoryInput)
         {
             ToggleInventory();

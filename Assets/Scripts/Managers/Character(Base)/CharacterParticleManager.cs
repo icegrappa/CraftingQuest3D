@@ -1,18 +1,37 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CharacterParticleManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject successParticlePrefab;
+    [SerializeField] private GameObject failureParticlePrefab;
+
+    public void PlaySuccessParticle()
     {
-        
+        StartCoroutine(PlayParticleAndDestroy(successParticlePrefab));
+    }
+    
+    public void PlayFailureParticle()
+    {
+        StartCoroutine(PlayParticleAndDestroy(failureParticlePrefab));
     }
 
-    // Update is called once per frame
-    void Update()
+    private IEnumerator PlayParticleAndDestroy(GameObject particlePrefab)
     {
-        
+        if (particlePrefab != null)
+        {
+            var instantiatedParticle = Instantiate(particlePrefab, transform.position, Quaternion.identity);
+
+
+            var particleSystem = instantiatedParticle.GetComponent<ParticleSystem>();
+            if (particleSystem != null)
+                particleSystem.Play();
+           
+
+            yield return new WaitForSeconds(2f);
+
+            Destroy(instantiatedParticle);
+        }
+       
     }
 }

@@ -72,6 +72,9 @@ public class PlayerInputManager : MonoBehaviour
             
             _playerControls.PlayerUI.DelateItemUI.performed += i => _globalInput.deleteItemUIInput = true;
             _playerControls.PlayerUI.DelateItemUI.canceled += i => _globalInput.deleteItemUIInput = false;
+            
+            _playerControls.PlayerUI.H.performed += i => _globalInput.helpInput = true;
+            _playerControls.PlayerUI.Escape.performed += i => _globalInput.escapeInput = true;
         }
 
         _playerControls.Enable();

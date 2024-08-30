@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 1622554531775299595}
   - component: {fileID: 21868488865701425}
   - component: {fileID: 7199450259144715059}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Nail(World)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

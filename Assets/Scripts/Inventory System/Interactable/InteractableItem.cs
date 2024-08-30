@@ -48,7 +48,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
         // Sprawdzamy, czy obiekt ma mozliwosci nterakcji
         if (IsInteractable(playerTransform))
         {
-            InventoryManager.instance.ShowInteractionPrompt(itemData, 1, interactionMessage);  //
+            InventoryUIManager.instance.ShowInteractionPrompt(itemData, 1, interactionMessage);  //
             InteractableManager.AddInteractable(this); 
 
             // Sprawdzamy, czy użytkownik wywołał interakcję
@@ -144,7 +144,7 @@ public class InteractableItem : MonoBehaviour, IInteractable
     public void Interact(Transform interactingTransform)
     {
         Debug.Log("Interakcja z itemem");
-        InventoryManager.instance.HideInteractionPrompt(); // Ukrywamy prompt po interakcji
+        InventoryUIManager.instance.HideInteractionPrompt(); // Ukrywamy prompt po interakcji
 
         var inventory = interactingTransform.GetComponent<InventoryContainer>();
         var globalHandler = interactingTransform.GetComponent<GlobalEventHandler>();

@@ -193,6 +193,24 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Hold(duration=0.1)"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Escape"",
+                    ""type"": ""Button"",
+                    ""id"": ""f14300d7-6a67-4cdf-beb9-e651f32f5b51"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""H"",
+                    ""type"": ""Button"",
+                    ""id"": ""b9041d56-7d61-4c90-93a8-0a6562be6e72"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -226,6 +244,28 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""DelateItemUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c16f194a-6b16-44bf-898b-98bf94a3bb7b"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Escape"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""05795ffe-d5b7-442a-9fbd-f0a9c4a16c95"",
+                    ""path"": ""<Keyboard>/h"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""H"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -286,6 +326,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         m_PlayerUI_Inventory = m_PlayerUI.FindAction("Inventory", throwIfNotFound: true);
         m_PlayerUI_Stack = m_PlayerUI.FindAction("Stack", throwIfNotFound: true);
         m_PlayerUI_DelateItemUI = m_PlayerUI.FindAction("DelateItemUI", throwIfNotFound: true);
+        m_PlayerUI_Escape = m_PlayerUI.FindAction("Escape", throwIfNotFound: true);
+        m_PlayerUI_H = m_PlayerUI.FindAction("H", throwIfNotFound: true);
         // Camera Movement
         m_CameraMovement = asset.FindActionMap("Camera Movement", throwIfNotFound: true);
         m_CameraMovement_Movement = m_CameraMovement.FindAction("Movement", throwIfNotFound: true);
@@ -461,6 +503,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
     private readonly InputAction m_PlayerUI_Inventory;
     private readonly InputAction m_PlayerUI_Stack;
     private readonly InputAction m_PlayerUI_DelateItemUI;
+    private readonly InputAction m_PlayerUI_Escape;
+    private readonly InputAction m_PlayerUI_H;
     public struct PlayerUIActions
     {
         private @PlayerControls m_Wrapper;
@@ -468,6 +512,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         public InputAction @Inventory => m_Wrapper.m_PlayerUI_Inventory;
         public InputAction @Stack => m_Wrapper.m_PlayerUI_Stack;
         public InputAction @DelateItemUI => m_Wrapper.m_PlayerUI_DelateItemUI;
+        public InputAction @Escape => m_Wrapper.m_PlayerUI_Escape;
+        public InputAction @H => m_Wrapper.m_PlayerUI_H;
         public InputActionMap Get() { return m_Wrapper.m_PlayerUI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -486,6 +532,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DelateItemUI.started += instance.OnDelateItemUI;
             @DelateItemUI.performed += instance.OnDelateItemUI;
             @DelateItemUI.canceled += instance.OnDelateItemUI;
+            @Escape.started += instance.OnEscape;
+            @Escape.performed += instance.OnEscape;
+            @Escape.canceled += instance.OnEscape;
+            @H.started += instance.OnH;
+            @H.performed += instance.OnH;
+            @H.canceled += instance.OnH;
         }
 
         private void UnregisterCallbacks(IPlayerUIActions instance)
@@ -499,6 +551,12 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
             @DelateItemUI.started -= instance.OnDelateItemUI;
             @DelateItemUI.performed -= instance.OnDelateItemUI;
             @DelateItemUI.canceled -= instance.OnDelateItemUI;
+            @Escape.started -= instance.OnEscape;
+            @Escape.performed -= instance.OnEscape;
+            @Escape.canceled -= instance.OnEscape;
+            @H.started -= instance.OnH;
+            @H.performed -= instance.OnH;
+            @H.canceled -= instance.OnH;
         }
 
         public void RemoveCallbacks(IPlayerUIActions instance)
@@ -577,6 +635,8 @@ public partial class @PlayerControls: IInputActionCollection2, IDisposable
         void OnInventory(InputAction.CallbackContext context);
         void OnStack(InputAction.CallbackContext context);
         void OnDelateItemUI(InputAction.CallbackContext context);
+        void OnEscape(InputAction.CallbackContext context);
+        void OnH(InputAction.CallbackContext context);
     }
     public interface ICameraMovementActions
     {
