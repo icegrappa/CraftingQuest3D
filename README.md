@@ -1,7 +1,3 @@
-Here's your text formatted correctly for Markdown:
-
----
-
 # CraftingQuest3D
 
 **CraftingQuest3D** to prosty projekt gry 3D stworzony w Unity 2022.3.7f1. Gra zawiera system craftingu, ekwipunku oraz interakcji z obiektami w świecie gry. Gracz może zbierać surowce, tworzyć nowe przedmioty i eksplorować świat.
@@ -81,7 +77,3 @@ Dodałem dwa nowe klipy audio dla efektów sukcesu i porażki, aby wzbogacić wr
 ## Informacje Prawne
 
 Nie czerpię żadnych korzyści i nie redystrybuuję żadnych zasobów zawartych w tym projekcie. Wszystkie assety są używane wyłącznie do celów prototypowania.
-
----
-
-This Markdown format is suitable for a README file on GitHub or any other platform that supports Markdown. It organizes the information in a clean and readable way while using headers and lists effectively.
