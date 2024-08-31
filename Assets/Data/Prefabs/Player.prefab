@@ -989,7 +989,7 @@ MonoBehaviour:
   playerMotionController: {fileID: 0}
   playerNetworkManager: {fileID: 0}
   playerInventory: {fileID: 0}
-  startingPosition: {x: 0, y: 100, z: 0}
+  startingPosition: {x: 0, y: 100, z: -10}
 --- !u!114 &3412998676494866881
 MonoBehaviour:
   m_ObjectHideFlags: 0

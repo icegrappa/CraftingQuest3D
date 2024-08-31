@@ -77,49 +77,64 @@ public class PlayerManager : CharacterManager
         GlobalInputManager.instance.LockPlayerCursor();
     }
     /// <summary>
-    /// Teleportuje gracza do określonej pozycji i rotacji, upewniając się, że świat jest w pełni załadowany, 
-    /// oraz dostosowuje pozycję i rotację gracza do normalnej powierzchni terenu.
-    /// </summary>
-    /// <param name="targetPosition">Docelowa pozycja, do której gracz ma zostać teleportowany.</param>
-    /// <param name="targetRotation">Docelowa rotacja, którą ma przyjąć gracz. Domyślnie Quaternion.identity.</param>
-    /// <param name="delay">Opcjonalne opóźnienie w sekundach przed wykonaniem teleportacji. Domyślnie 0.</param>
-    public IEnumerator TeleportPlayer(Vector3 targetPosition, Quaternion targetRotation = default, float delay = 0f)
+/// Teleportuje gracza do określonej pozycji i rotacji, upewniając się, że świat jest w pełni załadowany, 
+/// oraz dostosowuje pozycję i rotację gracza do normalnej powierzchni terenu.
+/// </summary>
+/// <param name="targetPosition">Docelowa pozycja, do której gracz ma zostać teleportowany.</param>
+/// <param name="targetRotation">Docelowa rotacja, którą ma przyjąć gracz. Domyślnie Quaternion.identity.</param>
+/// <param name="delay">Opcjonalne opóźnienie w sekundach przed wykonaniem teleportacji. Domyślnie 0.</param>
+public IEnumerator TeleportPlayer(Vector3 targetPosition, Quaternion targetRotation = default, float delay = 0f)
+{
+    characterController.detectCollisions = false;
+    
+    if (delay > 0)
     {
-        characterController.detectCollisions = false;
-        
-        if (delay > 0)
-        {
-            yield return new WaitForSeconds(delay);
-        }
-
-        // Poczekaj, aż świat będzie w pełni załadowany
-        while (!GameManager.instance.worldIsSpawned)
-        {
-            yield return null;
-        }
-
-         // Wait for the end of the frame
-         yield return new WaitForEndOfFrame();
-
-        // Ustaw pozycję i rotację gracza
-        transform.position = targetPosition;
-        transform.rotation = targetRotation == default ? Quaternion.identity : targetRotation;
-
-        // Wykonaj rzutowanie promienia w dół, aby dostosować rotację na podstawie normalnej powierzchni terenu
-        if (Physics.Raycast(targetPosition + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, Mathf.Infinity, GameManager.instance.GetTerrainMask()))
-        {
-            transform.position = hit.point + Vector3.up * characterController.height;
-            transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
-            Debug.Log("Gracz teleportowany na pozycję: " + transform.position + " i rotację: " + transform.rotation);
-        }
-        else
-        {
-            Debug.LogWarning("Nie znaleziono terenu pod podaną pozycją.");
-            yield return null;
-        }
-        
-        playerMotionController.canApplyGravity = true;
-        characterController.detectCollisions = true;
+        yield return new WaitForSeconds(delay);
     }
+
+    // Poczekaj, aż świat będzie w pełni załadowany
+    while (!GameManager.instance.worldIsSpawned)
+    {
+        yield return null;
+    }
+
+    // Wait for the end of the frame
+    yield return null;
+
+    bool validPositionFound = false;
+    int maxAttempts = 100; // Maximum attempts to find a valid position
+    Vector3 finalPosition = targetPosition;
+
+    for (int i = 0; i < maxAttempts; i++)
+    {
+        // Sprawdzenie kolizji w docelowej pozycji
+        if (!Physics.CheckSphere(finalPosition, characterController.radius, GameManager.instance.GetCollisionMask()))
+        {
+            // Wykonaj rzutowanie promienia w dół, aby dostosować rotację na podstawie normalnej powierzchni terenu
+            if (Physics.Raycast(finalPosition + Vector3.up * 0.5f, Vector3.down, out RaycastHit hit, Mathf.Infinity, GameManager.instance.GetTerrainMask()))
+            {
+                finalPosition = hit.point + Vector3.up * characterController.height * 2f;
+                transform.rotation = Quaternion.FromToRotation(Vector3.up, hit.normal);
+                validPositionFound = true;
+                Debug.Log("Gracz teleportowany na pozycję: " + finalPosition + " i rotację: " + transform.rotation);
+                break;
+            }
+        }
+
+        // If not valid, try a new random position nearby
+        finalPosition = targetPosition + Random.insideUnitSphere * 2.0f; // Adjust the multiplier as needed for range
+    }
+
+    if (!validPositionFound)
+    {
+        Debug.LogWarning("Nie udało się znaleźć odpowiedniej pozycji do teleportacji po " + maxAttempts + " próbach.");
+    }
+
+    // Apply the final position and enable collision detection
+    transform.position = finalPosition;
+    playerMotionController.canApplyGravity = true;
+    characterController.detectCollisions = true;
+}
+
 
 }

@@ -1524,7 +1524,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 524700700401647491, guid: 6a6f79dca5c6b974a9eec8970a30c0a9, type: 3}
       propertyPath: collisionLayer.m_Bits
-      value: 128
+      value: 640
       objectReference: {fileID: 0}
     - target: {fileID: 3704625162255904369, guid: 6a6f79dca5c6b974a9eec8970a30c0a9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1725,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9103726025535988081, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.000029
+      value: 17.00002
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
