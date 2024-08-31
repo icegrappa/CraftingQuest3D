@@ -68,6 +68,8 @@ public class EnvironmentGenerator : MonoBehaviour
         PlaceWalls();
         SpawnTrees();
         SpawnResources();
+
+        NotifyGameManager();
     }
 
     // Generowanie  terenu na podstawie zadanych wymiarów i prefabów
@@ -239,5 +241,10 @@ public class EnvironmentGenerator : MonoBehaviour
     public (Vector3 start, Vector3 end) GetTerrainBounds()
     {
         return (terrainStart, terrainEnd); 
+    }
+
+    private void NotifyGameManager()
+    {
+        GameManager.instance.worldIsSpawned = true;
     }
 }

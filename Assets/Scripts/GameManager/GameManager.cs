@@ -10,6 +10,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int mainMenuSceneIndex = -1;
     [SerializeField] private int worldSceneIndex = -1;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private LayerMask collisionLayer;
+
+    [SerializeField] public bool worldIsSpawned;
 
     // event który określa czy załadowana główną scene
     public delegate void WorldSceneLoadedDelegate();
@@ -64,7 +67,7 @@ public class GameManager : MonoBehaviour
     public Vector3 GetMouseWorldPosition()
     {
         if (Camera.main == null) return Vector3.zero;
-        
+
         var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundLayer))
         {
@@ -111,26 +114,34 @@ public class GameManager : MonoBehaviour
 
         Debug.Log("Ładowanie sceny zakończone i w pełni aktywowane!");
     }
-    
+
     public void LoadMainMenuScene()
     {
         StartCoroutine(LoadMainMenu());
     }
-    
+
     public IEnumerator LoadMainMenu()
     {
+        SceneManager.LoadScene(mainMenuSceneIndex);
 
-      SceneManager.LoadScene(mainMenuSceneIndex);
+        yield return null;
 
-      yield return null;
-
-      // Debug.Log("Ładowanie sceny głównego menu zakończone i w pełni aktywowane!");
+        // Debug.Log("Ładowanie sceny głównego menu zakończone i w pełni aktywowane!");
     }
-
 
 
     public int GetWorldSceneIndex()
     {
         return worldSceneIndex;
+    }
+
+    public LayerMask GetTerrainMask()
+    {
+        return groundLayer;
+    }
+
+    public LayerMask GetCollisionMask()
+    {
+        return collisionLayer;
     }
 }

@@ -26,7 +26,7 @@ public class PlayerInputManager : MonoBehaviour
         // Subskrybuje event, który wywołuje metodę OnSceneChange za każdym razem, gdy zmieniamy scenę
         SceneManager.activeSceneChanged += OnSceneChange;
 
-        instance.enabled = false; // Wyłączenie instancji na starcie; będzie włączona tylko w określonej scenie
+        // instance.enabled = false; // Wyłączenie instancji na starcie; będzie włączona tylko w określonej scenie ?! w jakis sposob instancja sprawia problem
 
         if (_playerControls != null) _playerControls.Disable();
         
@@ -37,11 +37,11 @@ public class PlayerInputManager : MonoBehaviour
     {
         // Sprawdza, czy nowo załadowana scena to główna scena świata; jeśli tak, aktywuje instancję
         if (newScene.buildIndex == GameManager.instance.GetWorldSceneIndex())
-            instance.enabled = true; // Włączenie instancji w głównej scenie świata
+            //instance.enabled = true; // Włączenie instancji w głównej scenie świata
         if (_playerControls != null)
             _playerControls.Enable();
         else
-            instance.enabled = false; // Wyłączenie instancji, jeśli nie jesteśmy w głównej scenie świata
+            //instance.enabled = false; // Wyłączenie instancji, jeśli nie jesteśmy w głównej scenie świata
         if (_playerControls != null) _playerControls.Disable();
     }
 
@@ -86,6 +86,7 @@ public class PlayerInputManager : MonoBehaviour
     }
 
     // Jeśli zminimalizujemy lub opuścimy okno aplikacji, zatrzymaj przetwarzanie inputu
+    
     private void OnApplicationFocus(bool hasFocus)
     {
         if (enabled)
@@ -105,6 +106,7 @@ public class PlayerInputManager : MonoBehaviour
     private void HandleInput()
     {
         if(_globalInput.isInventoryOpen) return;
+        if(!_globalInput.isInWorldScene) return;
         HandlePlayerMovementInput();
         HandleCameraMovementInput();
         HandleSprintInput();

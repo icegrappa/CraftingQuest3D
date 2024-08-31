@@ -244,7 +244,8 @@ public class InventoryUIManager : MonoBehaviour
     {
         GlobalInputManager.instance.hasEscapeScreen = false;
         GameManager.instance.LoadMainMenuScene();
-        GlobalInputManager.instance.LockPlayerCursor();
+        GlobalInputManager.instance.isInWorldScene = false;
+        GlobalInputManager.instance.UnlockPlayerCursor();
     }
 
     

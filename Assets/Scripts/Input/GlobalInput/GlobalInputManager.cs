@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 //stworzyłem globalny input manager dla komunikacji pomio roznych assembly 
 public class GlobalInputManager : MonoBehaviour
