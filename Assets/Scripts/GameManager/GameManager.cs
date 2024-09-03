@@ -14,6 +14,8 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] public bool worldIsSpawned;
 
+    private Transform playerTransform;
+    
     // event który określa czy załadowana główną scene
     public delegate void WorldSceneLoadedDelegate();
 
@@ -66,7 +68,7 @@ public class GameManager : MonoBehaviour
     /// <returns>Pozycja w świecie po dostosowaniu do powierzchni obiektu trafionego przez promień.</returns>
     public Vector3 GetMouseWorldPosition()
     {
-        if (Camera.main == null) return Vector3.zero;
+        if (Camera.main == null) return playerTransform.position + playerTransform.forward * 2f;
 
         var ray = Camera.main.ScreenPointToRay(Mouse.current.position.ReadValue());
         if (Physics.Raycast(ray, out var hitInfo, Mathf.Infinity, groundLayer))
@@ -76,11 +78,19 @@ public class GameManager : MonoBehaviour
 
             // Dostosowanie pozycji trafienia, aby była na powierzchni, poprzez przesunięcie jej nieco wzdłuż normalnej
             var surfacePosition = hitInfo.point + hitInfo.normal * 0.1f; // 0.1f to mały offset wzdłuż normalnej
+
+            // Sprawdzanie odległości od gracza
+            if (Vector3.Distance(playerTransform.position, surfacePosition) > 4f)
+            {
+                Debug.Log("Pozycja jest za daleko od gracza.");
+                return playerTransform.position + playerTransform.forward * 2f;
+            }
+
             return surfacePosition;
         }
 
         Debug.Log("Brak trafienia na określonej warstwie.");
-        return Vector3.zero; // Zwraca zero, jeśli brak trafienia
+        return playerTransform.position + playerTransform.forward * 2f; // Zwraca pozycję gracza z offsetem, jeśli brak trafienia
     }
 
 
@@ -143,5 +153,10 @@ public class GameManager : MonoBehaviour
     public LayerMask GetCollisionMask()
     {
         return collisionLayer;
+    }
+
+    public void UpdatePlayerTransform(Transform player)
+    {
+        playerTransform = player;
     }
 }

@@ -200,7 +200,7 @@ public class InventoryUIManager : MonoBehaviour
 
     public void LockPlayerInputUI()
     {
-        GlobalInputManager.instance.LockPlayerCursor();
+        GlobalInputManager.instance.isInventoryOpen = false;
     }
 
     
@@ -246,6 +246,7 @@ public class InventoryUIManager : MonoBehaviour
         GameManager.instance.LoadMainMenuScene();
         GlobalInputManager.instance.isInWorldScene = false;
         GlobalInputManager.instance.UnlockPlayerCursor();
+        DisablePlayerInventoryUI();
     }
 
     

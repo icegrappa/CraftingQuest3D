@@ -33,6 +33,8 @@ public class PlayerManager : CharacterManager
     
         // Obsługuje cały ruch postaci gracza
         playerMotionController.HandleAllMovementTypes();
+        
+        GameManager.instance.UpdatePlayerTransform(this.transform);
     }
 
 

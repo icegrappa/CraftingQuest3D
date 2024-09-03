@@ -1516,7 +1516,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 524700700401647491, guid: 6a6f79dca5c6b974a9eec8970a30c0a9, type: 3}
       propertyPath: groundLayer.m_Bits
-      value: 64
+      value: 192
       objectReference: {fileID: 0}
     - target: {fileID: 524700700401647491, guid: 6a6f79dca5c6b974a9eec8970a30c0a9, type: 3}
       propertyPath: mainMenuSceneIndex
@@ -1723,9 +1723,25 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8735272413420223022, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LockPlayerInputUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735272413420223022, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: CloseCraftingWindow
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735272413420223022, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: InventoryUIManager, Project.Inventory
+      objectReference: {fileID: 0}
+    - target: {fileID: 8735272413420223022, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: InventoryManager, Project.Inventory
+      objectReference: {fileID: 0}
     - target: {fileID: 9103726025535988081, guid: f9ea1b297b35f1c409be7043d3008c24, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 17.00002
+      value: 16.999989
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
